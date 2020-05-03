@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Round and round</title>
+        <script src="lib/model.js"></script>
+        <script src="lib/texture.js"></script>
+        <script src="lib/webgl-obj-loader.min.js"></script>
+        <script src="lib/quaternion.min.js"></script>
+		<script src="lib/utils.js"></script>
+		<script src="lib/app.js"></script>
+		<script src="Rotation.js"></script>
+	</head>
+	
+	<body style="background-color: grey;" onLoad="main();">
+		<canvas id="my-canvas" width='800' height='450' style="background-color: white;">
+			Your browser doesn't support the Canvas Element!
+		</canvas>
+		<center>
+			<h1>Use the following keys to rotate the world</h1>
+			<table border="1">
+			  <tr>
+				<td>Roll Left: <B>Q</B></td>
+				<td>Turn up: <B>Up</B> Arrow</td>
+				<td>Roll right: <B>E</B></td>
+			  </tr>
+			  <tr>
+				<td>Turn left: <B>Left</B> Arrow</td>
+				<td>Turn down: <B>Down</B> Arrow</td>
+				<td>turn right: <B>Right</B> Arrow</td>
+			  </tr>
+			<table/>
+		</center>
+	</body>
+
+</html>

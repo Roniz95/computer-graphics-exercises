@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+	<head>
+		<title>HTML 5 Canvas Element</title>
+		<script src="perspective.js"></script>
+		<script src="view.js"></script>
+        <script src="lib/model.js"></script>
+        <script src="lib/texture.js"></script>
+        <script src="lib/quaternion.min.js"></script>
+        <script src="lib/webgl-obj-loader.min.js"></script>
+		<script src="lib/utils.js"></script>
+		<script src="lib/app2.js"></script>
+		<style>
+		.slidecontainer {
+		  width: 100%;
+		}
+		
+		.slider {
+		  -webkit-appearance: none;
+		  width: 100%;
+		  height: 25px;
+		  background: #d3d3d3;
+		  outline: none;
+		  opacity: 0.7;
+		  -webkit-transition: .2s;
+		  transition: opacity .2s;
+		}
+		
+		.slider:hover {
+		  opacity: 1;
+		}
+		
+		.slider::-webkit-slider-thumb {
+		  -webkit-appearance: none;
+		  appearance: none;
+		  width: 25px;
+		  height: 25px;
+		  background: #4CAF50;
+		  cursor: pointer;
+		}
+		
+		.slider::-moz-range-thumb {
+		  width: 25px;
+		  height: 25px;
+		  background: #4CAF50;
+		  cursor: pointer;
+		}
+		</style>
+	</head>
+	
+	<body style="background-color: grey;" onLoad="main();">
+	 <table><tr><td>
+		<canvas id="my-canvas" width='800' height='800' style="background-color: white;">
+			Your browser doesn't support the Canvas Element!
+		</canvas>
+	</td><td>
+		<div class="slidecontainer">
+		  <input type="range" min="10" max="130" value="45" class="slider" id="myRange">
+		  <p>Fov-y: <span id="demo"></span></p>
+		</div>
+		<center><h1>Use the following keys to move the camera</h1>
+		<table border="1">
+		<tr>
+			<td>Roll L.: <B>Q</B></td>
+			<td>Forward: <B>W</B></td>
+			<td>Roll R.: <B>E</B></td>
+			<td>Strafe Up: <B>R</B></td>
+		</tr>
+		<tr>
+			<td>Strafe L.: <B>A</B></td>
+			<td>Backward: <B>S</B></td>
+			<td>Strafe R.: <B>D</B></td>
+			<td>Strafe Dw: <B>F</B></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>look Up: <B>Up</B></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>look L.: <B>Left</B></td>
+			<td>look Dw: <B>Down</B></td>
+			<td>look R.: <B>Right</B></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+			 	<B>SPACE BAR</B>: shows / hides the "ghost" house
+			</td>
+		</tr>
+		</table>
+		</center>
+	</td></tr></table>	
+	
+		<script>
+		var slider = document.getElementById("myRange");
+		var output = document.getElementById("demo");
+		output.innerHTML = slider.value;
+		
+		slider.oninput = function() {
+		  output.innerHTML = this.value;
+		}
+		</script>
+	</body>
+
+</html>
