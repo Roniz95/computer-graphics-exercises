@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+	<head>
+		<title>HTML 5 Canvas Element</title>
+		<script src="draw.js"> </script>
+		<script>
+var canvas;
+var gl = null;
+
+var vU = [];
+var stl1, stl2, stl3, stl4, stl5;
+var show2 = false;
+var program = null;
+
+var keyFunction =function(e) {
+	if (e.keyCode == 32) {	// Space
+		show2 = !show2;
+	}	
+}
+//'window' is a JavaScript object (if "canvas", it will not work)
+window.addEventListener("keyup", keyFunction, false);
+
+
+function line(x1,y1,x2,y2) {
+	vU = vU.concat([x1,y1,x2,y2]);
+}
+
+function main(){
+	var canvas = document.getElementById("my-canvas");
+	
+	try{
+		gl= canvas.getContext("webgl2");
+	} catch(e){
+		console.log(e);
+	}
+	
+	if(gl){
+	
+		var vertices = [ -1, 0,
+						  1, 0,
+						  0,-1,
+						  0, 1];
+		j = stl1 = vertices.length;
+		
+		for(i=1; i<10; i++) {
+			// Horizontal lines
+			vertices[j++] = -1; 
+			vertices[j++] = i*0.1;
+			vertices[j++] = 1; 
+			vertices[j++] = i*0.1; 
+			vertices[j++] = -1; 
+			vertices[j++] = -i*0.1;
+			vertices[j++] = 1; 
+			vertices[j++] = -i*0.1; 
+			
+			// Vertical lines
+			vertices[j++] = i*0.1;
+			vertices[j++] = 1; 
+			vertices[j++] = i*0.1; 
+			vertices[j++] = -1; 
+			vertices[j++] = -i*0.1;
+			vertices[j++] = 1; 
+			vertices[j++] = -i*0.1; 
+			vertices[j++] = -1; 
+		}
+		stl2 = vertices.length;
+		
+		vertices = vertices.concat(
+						[-0.5, -0.3,
+						  0.5, -0.3,
+						  0.5,  0.0,
+						  0.3,  0.1,
+						  0.3,  0.3,
+						 -0.2,  0.3,
+						 -0.2,  0.1,
+						 -0.5,  0.0]
+		);
+		stl3 = vertices.length;
+		
+		draw();
+		vertices = vertices.concat(vU);
+		stl4 = vertices.length;
+
+		vU = [];
+		draw2();
+		vertices = vertices.concat(vU);
+		stl5 = vertices.length;
+		
+						 
+		var VBO = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, VBO);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+		
+// Vertex shader
+			var vs = `#version 300 es
+#define POSITION_LOCATION 0
+
+layout(location = POSITION_LOCATION) in vec2 pos1;
+
+void main() {
+	gl_Position = vec4(pos1, 0, 1);
+	gl_PointSize = 5.0;
+}
+`;
+
+// Fragment shader
+			var fs = `#version 300 es
+precision highp float;
+
+out vec4 color;
+
+uniform vec4 pColor;
+
+void main() {
+	color = pColor;
+}
+`;
+		program = gl.createProgram();
+		var v1 = gl.createShader(gl.VERTEX_SHADER);
+		gl.shaderSource(v1, vs);
+		gl.compileShader(v1);
+		var v2 = gl.createShader(gl.FRAGMENT_SHADER);
+		gl.shaderSource(v2, fs)
+		gl.compileShader(v2);		
+		gl.attachShader(program, v1);
+		gl.attachShader(program, v2);
+		gl.linkProgram(program);				
+		
+		gl.useProgram(program);
+		
+		var vertexPositionHandle = gl.getAttribLocation(program, 'pos1');
+		gl.enableVertexAttribArray(vertexPositionHandle);
+		gl.vertexAttribPointer(vertexPositionHandle, 2, gl.FLOAT, false, 0, 0);
+
+		drawScene();
+	}else{
+		alert("Error: WebGL not supported by your browser!");
+	}
+}
+
+function drawScene() {
+	var pColorLocation = gl.getUniformLocation(program, 'pColor');
+	gl.uniform4f(pColorLocation, 0.2, 0.2, 0.2, 1.0);
+	gl.drawArrays(gl.LINES, 0, stl1/2);
+	gl.uniform4f(pColorLocation, 0.8, 0.8, 0.8, 1.0);
+	gl.drawArrays(gl.LINES, stl1/2, (stl2-stl1)/2);
+
+	if(!show2) {
+		gl.uniform4f(pColorLocation, 0.0, 0.0, 0.8, 1.0);
+		gl.drawArrays(gl.LINE_LOOP, stl2/2, (stl3-stl2)/2);
+		gl.drawArrays(gl.POINTS, stl2/2, (stl3-stl2)/2);
+		gl.uniform4f(pColorLocation, 0.8, 0.0, 0.0, 1.0);
+		gl.drawArrays(gl.LINES, stl3/2, (stl4-stl3)/2);
+	} else {
+		gl.uniform4f(pColorLocation, 0.0, 0.8, 0.0, 1.0);
+		gl.drawArrays(gl.LINES, stl4/2, (stl5-stl4)/2);
+	}
+		
+	window.requestAnimationFrame(drawScene);		
+}	
+
+		</script>
+	</head>
+	
+	<body style="background-color: grey;" onLoad="main();">
+		<canvas id="my-canvas" width='500' height='500' style="background-color: white;">
+			Your browser doesn't support the Canvas Element!
+		</canvas>
+		<center>Press Space to swap between <i>draw()</i> and <i>draw2()</i>.</center>
+	</body>
+
+</html>
