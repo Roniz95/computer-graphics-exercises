@@ -17,6 +17,7 @@ function buildGeometry() {
 		ind1[j++] = i + 1;
 		ind1[j++] = (i + 1) % 36 + 1;
 	}
+	
 	//////// Lower part
 	for(i = 0; i < 36; i++) {
 		ind1[j++] = 37;
@@ -33,8 +34,48 @@ function buildGeometry() {
 
 
 	// Draws a Cylinder -- To do for the assignment.
-	var vert2 = [[-1.0,-1.0,0.0], [1.0,-1.0,0.0], [-1.0,1.0,0.0], [1.0,1.0,0.0]];
-	var ind2 = [0, 1, 2,   1, 3, 2];
+
+	//bottom circunference vertices
+	var vert2 = [[0, 0, 0]];
+	for(i = 0; i < 36; i++) {
+		vert2[i+1] = [Math.sin(i*10.0/180.0*Math.PI), 0, Math.cos(i*10.0/180.0*Math.PI)];
+	}
+
+	//top circunference vertices
+	vert2[37] = [0, 2, 0]
+	for(i = 37; i < 73 ; i++) {
+		vert2[i+1] = [Math.sin(i*10.0/180.0*Math.PI), 2, Math.cos(i*10.0/180.0*Math.PI)];
+	}
+	
+
+	
+	var ind2 = [];
+	//bottom circunference indexes
+	for(i = 0; i < 36; i++) {
+		ind2[j++] = 0;
+		ind2[j++] = (i + 1) % 36 + 1;
+		ind2[j++] = i + 1;
+	}
+	
+	//top circunferences indexes
+	for(i = 37; i < 72  ; i++) {
+		ind2[j++] = 37 ;
+		ind2[j++] = (i + 1) % 36 + 38;
+		ind2[j++] = i + 1;
+	}
+
+	
+	for(i = 0; i < 36; i++) {
+		ind2[j++] = i;
+		ind2[j++] = i+1;
+		ind2[j++] = i + 37;
+		ind2[j++] = i + 37;
+		ind2[j++] = i + 38;
+		ind2[j++] = i + 2;
+	}
+	
+
+	console.log(ind2);
 	var color2 = [0.0, 0.0, 1.0];
 	addMesh(vert2, ind2, color2);
 
