@@ -10,10 +10,7 @@ function draw() {
 function draw2() {
 	
 
-	for(i = 0; i < 128; i++) {
-		y = (i - 64)  / 127.0 * 1.6;
-		line(0.4, y,-0.4, y);
-	}
+	drawYinYang();
 	
 }
 
@@ -29,5 +26,46 @@ function drawHouse() {
 }
 
 function drawYinYang() {
-	
+
+	for(i = 0; i < 128; i++) {
+		
+		x = 4*Math.cos(i*6.28/128)/5;
+		y = 4*Math.sin(i*6.28/128)/5;
+		x1 = 4*Math.cos((i+1)*6.28/128)/5;
+		y1 = 4*Math.sin((i+1)*6.28/128)/5;
+		line(x,y,x1,y1);
+	}
+
+	for(i = 0; i < 128; i++) {
+
+		x = Math.cos(i*6.28/128)/10;
+		y = 0.4+Math.sin(i*6.28/128)/10;
+		x1 = Math.cos((i+1)*6.28/128)/10;
+		y1 = 0.4+Math.sin((i+1)*6.28/128)/10;
+		line(x,y,x1,y1);
+	}
+	for(i = 0; i < 128; i++) {
+
+		x = Math.cos(i*6.28/128)/10;
+		y = -0.4+Math.sin(i*6.28/128)/10;
+		x1 = Math.cos((i+1)*6.28/128)/10;
+		y1 = -0.4+Math.sin((i+1)*6.28/128)/10;
+		line(x,y,x1,y1);
+	}
+	for(i = 0; i < 128; i++) {
+
+		x = 4*Math.sin(i*3.14/128)/10;
+		y = 0.4+4*Math.cos(i*3.14/128)/10;
+		x1 = 4*Math.sin((i+1)*3.14/128)/10;
+		y1 = 0.4+4*Math.cos((i+1)*3.14/128)/10;
+		line(x,y,x1,y1);
+	}
+	for(i = 0; i < 128; i++) {
+
+		x = -4*Math.sin(i*3.14/128)/10;
+		y = -0.4+4*Math.cos(i*3.14/128)/10;
+		x1 = -4*Math.sin((i+1)*3.14/128)/10;
+		y1 = -0.4+4*Math.cos((i+1)*3.14/128)/10;
+		line(x,y,x1,y1);
+	}
 }
